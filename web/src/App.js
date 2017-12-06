@@ -29,7 +29,7 @@ class App extends Component {
         {
           !!decodedToken ? (
             <div>
-              <h2>{ decodedToken.email }</h2>
+              <h2 className='mb-3'>{ decodedToken.email }</h2>
               <button onClick={ this.onSignOut }>Sign Out</button>
             </div>
           ) : (
