@@ -1,10 +1,12 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const authMiddleware = require('./middleware/auth')
 
 const server = express()
 
 // Middleware Plugins
 server.use(bodyParser.json()) // Allows me to have JSON uploads (POST/PUT/PATCH)
+server.use(authMiddleware.initialize) // Kick passport off
 
 // Routes
 server.use([

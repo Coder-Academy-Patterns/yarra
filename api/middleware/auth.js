@@ -1,5 +1,10 @@
 const passport = require('passport')
+const JWT = require('jsonwebtoken')
 const User = require('../models/User')
+
+const jwtSecret = '.]y#rg9C43evhEsy'
+const jwtAlgorithm = 'HS256'
+const jwtExpiresIn = '7 days'
 
 passport.use(User.createStrategy())
 
@@ -25,7 +30,31 @@ function register(req, res, next) {
   })
 }
 
+function signJWTForUser(req, res) {
+  // Get the user (either just signed in or signed up)
+  const user = req.user
+  // Create a signed token
+  const token = JWT.sign(
+    // Payload
+    {
+      email: user.email
+    },
+    // Secret
+    jwtSecret,
+    // Options
+    {
+      algorithm: jwtAlgorithm,
+      expiresIn: jwtExpiresIn,
+      subject: user._id.toString()
+    }
+  )
+  // Send the token
+  res.json({ token })
+}
+
 module.exports = {
+  initialize: passport.initialize(),
   register,
-  signIn: passport.authenticate('local', { session: false })
+  signIn: passport.authenticate('local', { session: false }),
+  signJWTForUser
 }
