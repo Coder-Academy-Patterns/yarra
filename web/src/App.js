@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import './App.css';
 import { getDecodedToken } from './api/token'
 import { signIn, signOutNow } from './api/auth'
+import { listProducts } from './api/products'
 import SignInForm from './components/SignInForm'
 
 class App extends Component {
   state = {
-    decodedToken: getDecodedToken()
+    decodedToken: getDecodedToken(),
+    products: null
   }
 
   onSignIn = ({ email, password }) => {
@@ -22,7 +24,7 @@ class App extends Component {
   }
 
   render() {
-    const { decodedToken } = this.state
+    const { decodedToken, products } = this.state
 
     return (
       <div className="App">
@@ -41,8 +43,33 @@ class App extends Component {
             </div>
           )
         }
+        { products &&
+          <p>{ products.length } products</p>
+        }
       </div>
     );
+  }
+
+  load() {
+    listProducts()
+      .then((products) => {
+        this.setState({ products })
+      })
+  }
+
+  componentDidMount() {
+    const { decodedToken } = this.state
+    if (decodedToken) {
+      this.load()
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { decodedToken } = this.state
+    // Just signed in
+    if (!!decodedToken && decodedToken !== prevState.decodedToken) {
+      this.load()
+    }
   }
 }
 
