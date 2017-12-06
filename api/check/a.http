@@ -1,1 +1,13 @@
 GET http://localhost:7000/products
+
+
+###
+POST http://localhost:7000/auth/register
+Content-Type: application/json
+
+{
+  "email": "patrick.smith@coderacademy.edu.au",
+  "firstName": "Patrick",
+  "lastName": "Smith",
+  "password": "password123"
+}
