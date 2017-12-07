@@ -8,7 +8,8 @@ import { getDecodedToken } from './api/token'
 
 class App extends Component {
   state = {
-    decodedToken: getDecodedToken() // Restore the previous signed in data
+    decodedToken: getDecodedToken(), // Restore the previous signed in data
+    products: null
   }
 
   onSignIn = ({ email, password }) => {
@@ -68,15 +69,36 @@ class App extends Component {
     );
   }
 
+  load() {
+    const { decodedToken } = this.state
+    if (decodedToken) {
+      listProducts()
+        .then((products) => {
+          this.setState({ products })
+        })
+        .catch((error) => {
+          console.error('error loading products', error)
+        })
+    }
+    else {
+      this.setState({
+        products: null
+      })
+    }
+  }
+
   // When this App first appears on screen
   componentDidMount() {
-    listProducts()
-      .then((products) => {
-        console.log(products)
-      })
-      .catch((error) => {
-        console.error('error loading products', error)
-      })
+    this.load()
+  }
+
+  // When state changes
+  componentDidUpdate(prevProps, prevState) {
+    // If just signed in, signed up, or signed out,
+    // then the token will have changed
+    if (this.state.decodedToken !== prevState.decodedToken) {
+      this.load()
+    }
   }
 }
 
