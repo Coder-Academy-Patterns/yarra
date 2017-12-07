@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import SignInForm from './components/SignInForm'
-import { signIn, signOutNow } from './api/auth'
+import SignUpForm from './components/SignUpForm'
+import { signIn, signUp, signOutNow } from './api/auth'
 import { listProducts } from './api/products'
 import { getDecodedToken } from './api/token'
 
@@ -15,6 +16,13 @@ class App extends Component {
     signIn({ email, password })
       .then((decodedToken) => {
         console.log('signed in', decodedToken)
+        this.setState({ decodedToken })
+      })
+  }
+
+  onSignUp = ({ email, password, firstName, lastName }) => {
+    signUp({ email, password, firstName, lastName })
+      .then((decodedToken) => {
         this.setState({ decodedToken })
       })
   }
@@ -43,9 +51,17 @@ class App extends Component {
               </button>
             </div>
           ) : (
-            <SignInForm
-              onSignIn={ this.onSignIn }
-            />
+            <div>
+              <h2>Sign In</h2>
+              <SignInForm
+                onSignIn={ this.onSignIn }
+              />
+
+              <h2>Sign Up</h2>
+              <SignUpForm
+                onSignUp={ this.onSignUp }
+              />
+            </div>
           )
         }
       </div>
