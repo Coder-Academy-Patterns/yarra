@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import SignInForm from './components/SignInForm'
 import SignUpForm from './components/SignUpForm'
+import ProductList from './components/ProductList'
 import { signIn, signUp, signOutNow } from './api/auth'
 import { listProducts } from './api/products'
 import { getDecodedToken } from './api/token'
@@ -34,7 +35,7 @@ class App extends Component {
   }
 
   render() {
-    const { decodedToken } = this.state
+    const { decodedToken, products } = this.state
     const signedIn = !!decodedToken
 
     return (
@@ -64,6 +65,9 @@ class App extends Component {
               />
             </div>
           )
+        }
+        { products &&
+          <ProductList products={ products } />
         }
       </div>
     );
