@@ -14,4 +14,14 @@ router.get('/products', authMiddleware.requireJWT, (req, res) => {
     })
 })
 
+router.post('/products', authMiddleware.requireJWT, (req, res) => {
+  Product.create(req.body)
+    .then((product) => {
+      res.status(201).json(product)
+    })
+    .catch((error) => {
+      res.status(400).json({ error })
+    })
+})
+
 module.exports = router
