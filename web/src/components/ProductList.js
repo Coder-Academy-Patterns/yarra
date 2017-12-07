@@ -5,7 +5,8 @@ function ProductList({
   products
 }) { 
   return (
-    <div>
+    <div className='mb-3'>
+      <h2>Products</h2>
       {
         products.map((product) => (
           <Product {...product} />

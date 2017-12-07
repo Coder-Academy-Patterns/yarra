@@ -3,8 +3,9 @@ import './App.css';
 import SignInForm from './components/SignInForm'
 import SignUpForm from './components/SignUpForm'
 import ProductList from './components/ProductList'
+import NewProductForm from './components/NewProductForm'
 import { signIn, signUp, signOutNow } from './api/auth'
-import { listProducts } from './api/products'
+import { listProducts, createProduct } from './api/products'
 import { getDecodedToken } from './api/token'
 
 class App extends Component {
@@ -34,6 +35,19 @@ class App extends Component {
     this.setState({ decodedToken: null })
   }
 
+  onCreateProduct = (productData) => {
+    createProduct(productData)
+      .then((newProduct) => {
+        this.setState((prevState) => {
+          // Append to existing products array
+          const updatedProducts = prevState.products.concat(newProduct)
+          return {
+            products: updatedProducts
+          }
+        })
+      })
+  }
+
   render() {
     const { decodedToken, products } = this.state
     const signedIn = !!decodedToken
@@ -44,7 +58,7 @@ class App extends Component {
         <h2 className='mb-3'>Now Delivering: Shipping trillions of new products</h2>
         {
           signedIn ? (
-            <div>
+            <div className='mb-3'>
               <p>Email: { decodedToken.email }</p>
               <p>Signed in at: { new Date(decodedToken.iat * 1000).toISOString() }</p>
               <p>Expire at: { new Date(decodedToken.exp * 1000).toISOString() }</p>
@@ -68,6 +82,14 @@ class App extends Component {
         }
         { products &&
           <ProductList products={ products } />
+        }
+        { signedIn &&
+          <div>
+            <h2>Create Product</h2>
+            <NewProductForm
+              onCreateProduct={ this.onCreateProduct }
+            />
+          </div>
         }
       </div>
     );

@@ -6,7 +6,7 @@ function Product({
 }) { 
   return (
     <div>
-      <h2>{ brandName } { name }</h2>
+      <h3>{ brandName } { name }</h3>
     </div>
   )
 }
