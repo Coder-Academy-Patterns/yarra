@@ -30,3 +30,13 @@ Content-Type: application/json
   "brandName": "Ford",
   "name": "Falcon"
 }
+
+### Update product
+PUT http://localhost:7000/products/5a28c95edff50e5b800e28ce
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhdHJpY2suc21pdGhAY29kZXJhY2FkZW15LmVkdS5hdSIsImlhdCI6MTUxMjUzNDY3MywiZXhwIjoxNTEzMTM5NDczLCJzdWIiOiI1YTI3NTA2MzJkNmEzZDc5ODIwN2VmNjMifQ.zjeQTwytluem7xsesc7JHoUjM-SipTFJHg_nGiWTln4
+Content-Type: application/json
+
+{
+  "brandName": "Holden",
+  "name": "Commodore"
+}
