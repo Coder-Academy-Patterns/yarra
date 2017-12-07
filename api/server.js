@@ -14,6 +14,7 @@ server.use(authMiddleware.initialize) // Kick passport off
 server.use([
   require('./routes/products'),
   require('./routes/auth'),
+  require('./routes/wishlist'),
 ])
 
 // Start the server
