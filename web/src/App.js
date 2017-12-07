@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import SignInForm from './components/SignInForm'
-import { signIn } from './api/auth'
+import { signIn, signOutNow } from './api/auth'
 import { listProducts } from './api/products'
 import { getDecodedToken } from './api/token'
 
@@ -19,6 +19,11 @@ class App extends Component {
       })
   }
 
+  onSignOut = () => {
+    signOutNow()
+    this.setState({ decodedToken: null })
+  }
+
   render() {
     const { decodedToken } = this.state
 
@@ -32,6 +37,9 @@ class App extends Component {
               <p>Email: { decodedToken.email }</p>
               <p>Signed in at: { new Date(decodedToken.iat * 1000).toISOString() }</p>
               <p>Expire at: { new Date(decodedToken.exp * 1000).toISOString() }</p>
+              <button onClick={ this.onSignOut }>
+                Sign Out
+              </button>
             </div>
           ) : (
             <SignInForm

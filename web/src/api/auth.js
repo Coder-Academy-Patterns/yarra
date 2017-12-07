@@ -9,3 +9,8 @@ export function signIn({ email, password }) {
       return getDecodedToken()
     })
 }
+
+export function signOutNow() {
+  // Forget the token
+  setToken(null)
+}
