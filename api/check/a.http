@@ -40,3 +40,15 @@ Content-Type: application/json
   "brandName": "Holden",
   "name": "Commodore"
 }
+
+### Read wishlist
+GET http://localhost:7000/wishlist
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhdHJpY2suc21pdGhAY29kZXJhY2FkZW15LmVkdS5hdSIsImlhdCI6MTUxMjUzNDY3MywiZXhwIjoxNTEzMTM5NDczLCJzdWIiOiI1YTI3NTA2MzJkNmEzZDc5ODIwN2VmNjMifQ.zjeQTwytluem7xsesc7JHoUjM-SipTFJHg_nGiWTln4
+
+### Add to wishlist
+POST http://localhost:7000/wishlist/products/5a28c6783987d05a48a2f585
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhdHJpY2suc21pdGhAY29kZXJhY2FkZW15LmVkdS5hdSIsImlhdCI6MTUxMjUzNDY3MywiZXhwIjoxNTEzMTM5NDczLCJzdWIiOiI1YTI3NTA2MzJkNmEzZDc5ODIwN2VmNjMifQ.zjeQTwytluem7xsesc7JHoUjM-SipTFJHg_nGiWTln4
+
+### Remove from wishlist
+DELETE http://localhost:7000/wishlist/products/5a28c6783987d05a48a2f585
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhdHJpY2suc21pdGhAY29kZXJhY2FkZW15LmVkdS5hdSIsImlhdCI6MTUxMjUzNDY3MywiZXhwIjoxNTEzMTM5NDczLCJzdWIiOiI1YTI3NTA2MzJkNmEzZDc5ODIwN2VmNjMifQ.zjeQTwytluem7xsesc7JHoUjM-SipTFJHg_nGiWTln4
