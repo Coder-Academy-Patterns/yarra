@@ -1,7 +1,8 @@
 import React from 'react'
 
-function NewProductForm({
-  onCreateProduct
+function ProductForm({
+  submitTitle,
+  onSubmit
 }) {
   return (
     <form
@@ -16,7 +17,7 @@ function NewProductForm({
         const name = elements.name.value
 
         // Pass this information along to the parent component
-        onCreateProduct({ brandName, name })
+        onSubmit({ brandName, name })
       } }
     >
       <label
@@ -38,10 +39,10 @@ function NewProductForm({
         />
       </label>
       <button>
-        Create Product
+        { submitTitle }
       </button>
     </form>
   )
 }
 
-export default NewProductForm
+export default ProductForm

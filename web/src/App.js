@@ -3,7 +3,7 @@ import './App.css';
 import SignInForm from './components/SignInForm'
 import SignUpForm from './components/SignUpForm'
 import ProductList from './components/ProductList'
-import NewProductForm from './components/NewProductForm'
+import ProductForm from './components/ProductForm'
 import { signIn, signUp, signOutNow } from './api/auth'
 import { listProducts, createProduct } from './api/products'
 import { getDecodedToken } from './api/token'
@@ -11,7 +11,8 @@ import { getDecodedToken } from './api/token'
 class App extends Component {
   state = {
     decodedToken: getDecodedToken(), // Restore the previous signed in data
-    products: null
+    products: null,
+    activeProductID: null
   }
 
   onSignIn = ({ email, password }) => {
@@ -86,8 +87,9 @@ class App extends Component {
         { signedIn &&
           <div>
             <h2>Create Product</h2>
-            <NewProductForm
-              onCreateProduct={ this.onCreateProduct }
+            <ProductForm
+              submitTitle='Create Product'
+              onSubmit={ this.onCreateProduct }
             />
           </div>
         }
