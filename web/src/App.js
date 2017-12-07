@@ -26,13 +26,14 @@ class App extends Component {
 
   render() {
     const { decodedToken } = this.state
+    const signedIn = !!decodedToken
 
     return (
       <div className="App">
         <h1>Yarra</h1>
         <h2 className='mb-3'>Now Delivering: Shipping trillions of new products</h2>
         {
-          !!decodedToken ? (
+          signedIn ? (
             <div>
               <p>Email: { decodedToken.email }</p>
               <p>Signed in at: { new Date(decodedToken.iat * 1000).toISOString() }</p>
