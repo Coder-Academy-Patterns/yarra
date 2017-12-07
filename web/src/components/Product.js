@@ -2,10 +2,11 @@ import React from 'react'
 
 function Product({
   brandName,
-  name
+  name,
+  onEdit
 }) { 
   return (
-    <div>
+    <div onClick={ onEdit }>
       <h3>{ brandName } { name }</h3>
     </div>
   )

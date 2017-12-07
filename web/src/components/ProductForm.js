@@ -1,6 +1,7 @@
 import React from 'react'
 
 function ProductForm({
+  initialProduct = {},
   submitTitle,
   onSubmit
 }) {
@@ -27,6 +28,7 @@ function ProductForm({
         <input
           type='text'
           name='brandName'
+          defaultValue={ initialProduct.brandName }
         />
       </label>
       <label
@@ -36,6 +38,7 @@ function ProductForm({
         <input
           type='text'
           name='name'
+          defaultValue={ initialProduct.name }
         />
       </label>
       <button>

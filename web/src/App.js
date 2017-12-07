@@ -5,7 +5,7 @@ import SignUpForm from './components/SignUpForm'
 import ProductList from './components/ProductList'
 import ProductForm from './components/ProductForm'
 import { signIn, signUp, signOutNow } from './api/auth'
-import { listProducts, createProduct } from './api/products'
+import { listProducts, createProduct, updateProduct } from './api/products'
 import { getDecodedToken } from './api/token'
 
 class App extends Component {
@@ -49,8 +49,34 @@ class App extends Component {
       })
   }
 
+  onChangeActiveProductID = (newID) => {
+    this.setState({ activeProductID: newID })
+  }
+
+  onUpdateActiveProduct = (productData) => {
+    const { activeProductID } = this.state
+    updateProduct(activeProductID, productData)
+      .then((updatedProduct) => {
+        this.setState((prevState) => {
+          // Replace in existing products array
+          const updatedProducts = prevState.products.map((product) => {
+            if (product._id === updatedProduct._id) {
+              return updatedProduct
+            }
+            else {
+              return product
+            }
+          })
+          return {
+            products: updatedProducts,
+            activeProductID: null,
+          }
+        })
+      })
+  }
+
   render() {
-    const { decodedToken, products } = this.state
+    const { decodedToken, products, activeProductID } = this.state
     const signedIn = !!decodedToken
 
     return (
@@ -82,7 +108,20 @@ class App extends Component {
           )
         }
         { products &&
-          <ProductList products={ products } />
+          <ProductList
+            products={ products }
+            activeProductID={ activeProductID }
+            onChangeActiveProductID={ this.onChangeActiveProductID }
+            renderEditForm={ (product) => (
+              <div className='ml-3'>
+                <ProductForm
+                  initialProduct={ product }
+                  submitTitle='Update Product'
+                  onSubmit={ this.onUpdateActiveProduct }
+                />
+              </div>
+            ) }
+          />
         }
         { signedIn &&
           <div>

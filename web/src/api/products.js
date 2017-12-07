@@ -9,3 +9,8 @@ export function createProduct(data) {
   return api.post('/products', data)
     .then((res) => res.data)
 }
+
+export function updateProduct(id, data) {
+  return api.put(`/products/${id}`, data)
+    .then((res) => res.data)
+}
