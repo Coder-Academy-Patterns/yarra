@@ -125,7 +125,7 @@ class App extends Component {
           />
         }
         { signedIn &&
-          <div>
+          <div className='mb-3'>
             <h2>Create Product</h2>
             <ProductForm
               submitTitle='Create Product'
