@@ -8,7 +8,7 @@ import Wishlist from './components/Wishlist'
 import { signIn, signUp, signOutNow } from './api/auth'
 import { getDecodedToken } from './api/token'
 import { listProducts, createProduct, updateProduct } from './api/products'
-import { listWishlist } from './api/wishlist'
+import { listWishlist, addProductToWishlist, removeProductFromWishlist } from './api/wishlist'
 
 class App extends Component {
   state = {
@@ -76,6 +76,20 @@ class App extends Component {
       })
   }
 
+  onAddProductToWishlist = (productID) => {
+    addProductToWishlist(productID)
+      .then((wishlist) => {
+        this.setState({ wishlist })
+      })
+  }
+
+  onRemoveProductFromWishlist = (productID) => {
+    removeProductFromWishlist(productID)
+      .then((wishlist) => {
+        this.setState({ wishlist })
+      })
+  }
+
   render() {
     const { decodedToken, products, editedProductID, wishlist } = this.state
     const signedIn = !!decodedToken
@@ -113,6 +127,8 @@ class App extends Component {
             products={ products }
             editedProductID={ editedProductID }
             onEditProduct={ this.onBeginEditingProduct }
+            onAddProductToWishlist={ this.onAddProductToWishlist }
+            onRemoveProductFromWishlist={ this.onRemoveProductFromWishlist }
             renderEditForm={ (product) => (
               <div className='ml-3'>
                 <ProductForm
@@ -136,6 +152,7 @@ class App extends Component {
         { signedIn && wishlist &&
           <Wishlist
             products={ wishlist.products }
+            onRemoveProductFromWishlist={ this.onRemoveProductFromWishlist }
           />
         }
       </div>

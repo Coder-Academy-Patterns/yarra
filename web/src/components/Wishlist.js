@@ -2,7 +2,8 @@ import React, { Fragment } from 'react'
 import Product from './Product'
 
 function Wishlist({
-  products
+  products,
+  onRemoveProductFromWishlist
 }) { 
   return (
     <div className='mb-3'>
@@ -12,6 +13,9 @@ function Wishlist({
           <Fragment key={ product._id }>
             <Product
               {...product}
+              onRemoveFromWishlist={ () => {
+                onRemoveProductFromWishlist(product._id)
+              } }
             />
           </Fragment>
         ))

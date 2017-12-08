@@ -5,6 +5,8 @@ function ProductList({
   products,
   editedProductID,
   onEditProduct,
+  onAddProductToWishlist,
+  onRemoveProductFromWishlist,
   renderEditForm
 }) { 
   return (
@@ -17,6 +19,12 @@ function ProductList({
               {...product}
               onEdit={ () => {
                 onEditProduct(product._id)
+              } }
+              onAddToWishlist={ () => {
+                onAddProductToWishlist(product._id)
+              } }
+              onRemoveFromWishlist={ () => {
+                onRemoveProductFromWishlist(product._id)
               } }
             />
             { editedProductID === product._id &&
