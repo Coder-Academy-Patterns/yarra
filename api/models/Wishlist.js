@@ -8,6 +8,6 @@ const wishlistSchema = new Schema({
   product: [{ type: Schema.ObjectId, ref: 'Product' }]
 })
 
-const Wishlist = mongoose.model('Wishlist', wishlistSchema)
+const Wishlist = mongoose.model('Wishlist2', wishlistSchema)
 
 module.exports = Wishlist

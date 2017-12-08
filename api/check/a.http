@@ -40,3 +40,7 @@ Content-Type: application/json
   "brandName": "Holden",
   "name": "Commodore"
 }
+
+###
+GET http://localhost:7000/wishlist
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhdHJpY2suc21pdGhAY29kZXJhY2FkZW15LmVkdS5hdSIsImlhdCI6MTUxMjY5NDQyOCwiZXhwIjoxNTEzMjk5MjI4LCJzdWIiOiI1YTI3NTA2MzJkNmEzZDc5ODIwN2VmNjMifQ.tzEjvcsj3cHCG7t6M7R-ufvmD1ddRj-J5OMapXcz5H8
