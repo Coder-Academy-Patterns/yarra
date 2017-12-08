@@ -4,22 +4,23 @@ import SignInForm from './components/SignInForm'
 import SignUpForm from './components/SignUpForm'
 import ProductList from './components/ProductList'
 import ProductForm from './components/ProductForm'
+import Wishlist from './components/Wishlist'
 import { signIn, signUp, signOutNow } from './api/auth'
-import { listProducts, createProduct, updateProduct } from './api/products'
 import { getDecodedToken } from './api/token'
+import { listProducts, createProduct, updateProduct } from './api/products'
+import { listWishlist } from './api/wishlist'
 
 class App extends Component {
   state = {
     decodedToken: getDecodedToken(), // Restore the previous signed in data
     products: null,
-    editedProductID: null
+    editedProductID: null,
+    wishlist: null
   }
 
   onSignIn = ({ email, password }) => {
-    console.log('App received', { email, password })
     signIn({ email, password })
       .then((decodedToken) => {
-        console.log('signed in', decodedToken)
         this.setState({ decodedToken })
       })
   }
@@ -76,7 +77,7 @@ class App extends Component {
   }
 
   render() {
-    const { decodedToken, products, editedProductID } = this.state
+    const { decodedToken, products, editedProductID, wishlist } = this.state
     const signedIn = !!decodedToken
 
     return (
@@ -132,6 +133,11 @@ class App extends Component {
             />
           </div>
         }
+        { signedIn && wishlist &&
+          <Wishlist
+            products={ wishlist.products }
+          />
+        }
       </div>
     );
   }
@@ -146,10 +152,19 @@ class App extends Component {
         .catch((error) => {
           console.error('error loading products', error)
         })
+      
+      listWishlist()
+        .then((wishlist) => {
+          this.setState({ wishlist })
+        })
+        .catch((error) => {
+          console.error('error loading wishlist', error)
+        })
     }
     else {
       this.setState({
-        products: null
+        products: null,
+        wishlist: null
       })
     }
   }
