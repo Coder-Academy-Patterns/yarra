@@ -28,7 +28,7 @@ Content-Type: application/json
 
 {
   "brandName": "Ford",
-  "name": "Falcon"
+  "name": "Focus"
 }
 
 ### Update product
