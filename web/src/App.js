@@ -12,7 +12,7 @@ class App extends Component {
   state = {
     decodedToken: getDecodedToken(), // Restore the previous signed in data
     products: null,
-    activeProductID: null
+    editedProductID: null
   }
 
   onSignIn = ({ email, password }) => {
@@ -49,13 +49,13 @@ class App extends Component {
       })
   }
 
-  onChangeActiveProductID = (newID) => {
-    this.setState({ activeProductID: newID })
+  onBeginEditingProduct = (newID) => {
+    this.setState({ editedProductID: newID })
   }
 
-  onUpdateActiveProduct = (productData) => {
-    const { activeProductID } = this.state
-    updateProduct(activeProductID, productData)
+  onUpdateEditedProduct = (productData) => {
+    const { editedProductID } = this.state
+    updateProduct(editedProductID, productData)
       .then((updatedProduct) => {
         this.setState((prevState) => {
           // Replace in existing products array
@@ -69,14 +69,14 @@ class App extends Component {
           })
           return {
             products: updatedProducts,
-            activeProductID: null,
+            editedProductID: null,
           }
         })
       })
   }
 
   render() {
-    const { decodedToken, products, activeProductID } = this.state
+    const { decodedToken, products, editedProductID } = this.state
     const signedIn = !!decodedToken
 
     return (
@@ -110,14 +110,14 @@ class App extends Component {
         { products &&
           <ProductList
             products={ products }
-            activeProductID={ activeProductID }
-            onChangeActiveProductID={ this.onChangeActiveProductID }
+            editedProductID={ editedProductID }
+            onEditProduct={ this.onBeginEditingProduct }
             renderEditForm={ (product) => (
               <div className='ml-3'>
                 <ProductForm
                   initialProduct={ product }
                   submitTitle='Update Product'
-                  onSubmit={ this.onUpdateActiveProduct }
+                  onSubmit={ this.onUpdateEditedProduct }
                 />
               </div>
             ) }

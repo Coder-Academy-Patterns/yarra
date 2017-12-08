@@ -3,8 +3,8 @@ import Product from './Product'
 
 function ProductList({
   products,
-  activeProductID,
-  onChangeActiveProductID,
+  editedProductID,
+  onEditProduct,
   renderEditForm
 }) { 
   return (
@@ -16,10 +16,10 @@ function ProductList({
             <Product
               {...product}
               onEdit={ () => {
-                onChangeActiveProductID(product._id)
+                onEditProduct(product._id)
               } }
             />
-            { activeProductID === product._id &&
+            { editedProductID === product._id &&
               renderEditForm(product)
             }
           </Fragment>
