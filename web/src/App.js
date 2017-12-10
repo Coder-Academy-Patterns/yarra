@@ -5,6 +5,7 @@ import {
   Route,
   Link
 } from 'react-router-dom'
+import PrimaryNav from './components/PrimaryNav'
 import SignInForm from './components/SignInForm'
 import SignUpForm from './components/SignUpForm'
 import ProductList from './components/ProductList'
@@ -111,6 +112,7 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
+          <PrimaryNav />
           <Route exact path='/'
             render={ () => <Fragment>
               <h1>Yarra</h1>
