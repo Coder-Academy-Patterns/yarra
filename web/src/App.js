@@ -150,6 +150,7 @@ class App extends Component {
           <Route path='/products' exact render={ requireAuth(() => (
             <ProductList
               products={ this.dataForSection('products') }
+              wishlist={ this.dataForSection('wishlist') }
               editedProductID={ editedProductID }
               onEditProduct={ this.onBeginEditingProduct }
               onAddProductToWishlist={ this.onAddProductToWishlist }
