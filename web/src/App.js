@@ -111,7 +111,9 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          <PrimaryNav />
+          <PrimaryNav
+            signedIn={ signedIn }
+          />
           <Route exact path='/'
             render={ () => <Fragment>
               <h1>Yarra</h1>
