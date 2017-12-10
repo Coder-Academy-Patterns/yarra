@@ -2,8 +2,7 @@ import React, { Component, Fragment } from 'react';
 import './App.css';
 import {
   BrowserRouter as Router,
-  Route,
-  Link
+  Route
 } from 'react-router-dom'
 import PrimaryNav from './components/PrimaryNav'
 import SignInForm from './components/SignInForm'
@@ -98,7 +97,7 @@ class App extends Component {
   }
 
   render() {
-    const { decodedToken, products, editedProductID, wishlist } = this.state
+    const { decodedToken, editedProductID } = this.state
     const signedIn = !!decodedToken
 
     const requireAuth = (render) => (props) => {
@@ -117,33 +116,35 @@ class App extends Component {
             render={ () => <Fragment>
               <h1>Yarra</h1>
               <h2 className='mb-3'>Now Delivering: Shipping trillions of new products</h2>
-            </Fragment>
-            }
+            </Fragment> }
           />
-          {
-            signedIn ? (
-              <div className='mb-3'>
-                <p>Email: { decodedToken.email }</p>
-                <p>Signed in at: { new Date(decodedToken.iat * 1000).toISOString() }</p>
-                <p>Expire at: { new Date(decodedToken.exp * 1000).toISOString() }</p>
-                <button onClick={ this.onSignOut }>
-                  Sign Out
-                </button>
-              </div>
-            ) : (
-              <div>
-                <h2>Sign In</h2>
-                <SignInForm
-                  onSignIn={ this.onSignIn }
-                />
-
-                <h2>Sign Up</h2>
-                <SignUpForm
-                  onSignUp={ this.onSignUp }
-                />
-              </div>
-            )
-          }
+          <Route exact path='/signin'
+            render={ () => <Fragment>
+              <h2 className='mb-3'>Sign In</h2>
+              <SignInForm
+                onSignIn={ this.onSignIn }
+              />
+            </Fragment> }
+          />
+          <Route exact path='/register'
+            render={ () => <Fragment>
+              <h2 className='mb-3'>Sign Up</h2>
+              <SignUpForm
+                onSignUp={ this.onSignUp }
+              />
+            </Fragment> }
+          />
+          <Route exact path='/account'
+            render={ requireAuth(() => <div className='mb-3'>
+              <h1>Account</h1>
+              <p>Email: { decodedToken.email }</p>
+              <p>Signed in at: { new Date(decodedToken.iat * 1000).toISOString() }</p>
+              <p>Expire at: { new Date(decodedToken.exp * 1000).toISOString() }</p>
+              <button onClick={ this.onSignOut }>
+                Sign Out
+              </button>
+            </div>) }
+          />
           <Route path='/products' exact render={ requireAuth(() => (
             <ProductList
               products={ this.dataForSection('products') }
@@ -152,7 +153,7 @@ class App extends Component {
               onAddProductToWishlist={ this.onAddProductToWishlist }
               onRemoveProductFromWishlist={ this.onRemoveProductFromWishlist }
               renderEditForm={ (product) => (
-                <div className='ml-3'>
+                <div className='ml-3 mb-3'>
                   <ProductForm
                     initialProduct={ product }
                     submitTitle='Update Product'
