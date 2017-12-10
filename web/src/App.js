@@ -10,8 +10,7 @@ import SignUpForm from './components/SignUpForm'
 import ProductList from './components/ProductList'
 import ProductForm from './components/ProductForm'
 import Wishlist from './components/Wishlist'
-import ProductsPage from './pages/Products'
-import AdminProductsPage from './pages/admin/Products'
+import AdminProductsPage from './components/admin/Products'
 import { signIn, signUp, signOutNow } from './api/auth'
 import { getDecodedToken } from './api/token'
 import { listProducts, createProduct, updateProduct } from './api/products'
@@ -20,9 +19,9 @@ import { listWishlist, addProductToWishlist, removeProductFromWishlist } from '.
 class App extends Component {
   state = {
     decodedToken: getDecodedToken(), // Restore the previous signed in data
-    products: null,
+    products: { data: null },
     editedProductID: null,
-    wishlist: null
+    wishlist: { data: null }
   }
 
   onSignIn = ({ email, password }) => {
@@ -86,20 +85,28 @@ class App extends Component {
   onAddProductToWishlist = (productID) => {
     addProductToWishlist(productID)
       .then((wishlist) => {
-        this.setState({ wishlist })
+        this.setState({ wishlist: { data: wishlist } })
       })
   }
 
   onRemoveProductFromWishlist = (productID) => {
     removeProductFromWishlist(productID)
       .then((wishlist) => {
-        this.setState({ wishlist })
+        this.setState({ wishlist: { data: wishlist } })
       })
   }
 
   render() {
     const { decodedToken, products, editedProductID, wishlist } = this.state
     const signedIn = !!decodedToken
+
+    const requireAuth = (render) => (props) => {
+      if (!signedIn) {
+        return <p>You must be signed in.</p>
+      }
+
+      return render(props)
+    }
 
     return (
       <Router>
@@ -135,8 +142,9 @@ class App extends Component {
               </div>
             )
           }
-          <Route path='/products' exact render={ () => (
-            <ProductsPage
+          <Route path='/products' exact render={ requireAuth(() => (
+            <ProductList
+              products={ this.dataForSection('products') }
               editedProductID={ editedProductID }
               onEditProduct={ this.onBeginEditingProduct }
               onAddProductToWishlist={ this.onAddProductToWishlist }
@@ -151,53 +159,78 @@ class App extends Component {
                 </div>
               ) }
             />
-          ) } />
+          )) } />
           <Route path='/admin/products' exact render={ () => (
             <AdminProductsPage
               onCreateProduct={ this.onCreateProduct }
             />
           ) } />
-          { signedIn && wishlist &&
-            <Wishlist
-              products={ wishlist.products }
-              onRemoveProductFromWishlist={ this.onRemoveProductFromWishlist }
-            />
-          }
+          <Route
+            exact
+            path='/wishlist'
+            render={ requireAuth(() => (
+              <Wishlist
+                wishlist={ this.dataForSection('wishlist') }
+                onRemoveProductFromWishlist={ this.onRemoveProductFromWishlist }
+              />
+          )) }
+          />
         </div>
       </Router>
     );
   }
 
-  load() {
-    const { decodedToken } = this.state
-    if (decodedToken) {
-      listProducts()
-        .then((products) => {
-          this.setState({ products })
-        })
-        .catch((error) => {
-          console.error('error loading products', error)
-        })
-      
-      listWishlist()
-        .then((wishlist) => {
-          this.setState({ wishlist })
-        })
-        .catch((error) => {
-          console.error('error loading wishlist', error)
-        })
-    }
-    else {
-      this.setState({
-        products: null,
-        wishlist: null
-      })
-    }
+  sections = {
+    products: {
+      requireAuth: true,
+      load: listProducts,
+    },
+    wishlist: {
+      requireAuth: true,
+      load: listWishlist,
+    },
   }
 
-  // When this App first appears on screen
-  componentDidMount() {
-    this.load()
+  loadSection(section) {
+    const { pending, requireAuth, load } = this.sections[section]
+    // If already loading
+    if (pending) {
+      return
+    }
+
+    // If requires authentication and not signed in
+    if (requireAuth && this.state.decodedToken == null) {
+      return
+    }
+
+    // If already loaded
+    if (this.state[section].data) {
+      return
+    }
+    
+    this.sections[section].pending = true
+    
+    load()
+      .then((data) => {
+        this.setState({
+          [section]: {
+            error: null,
+            data,
+          }
+        })
+      })
+      .catch((error) => {
+        this.setState({
+          [section]: {
+            error,
+          }
+        })
+      })
+  }
+
+  dataForSection(section) {
+    this.loadSection(section)
+    return this.state[section].data
   }
 
   // When state changes
@@ -205,7 +238,7 @@ class App extends Component {
     // If just signed in, signed up, or signed out,
     // then the token will have changed
     if (this.state.decodedToken !== prevState.decodedToken) {
-      this.load()
+      //this.load()
     }
   }
 }
