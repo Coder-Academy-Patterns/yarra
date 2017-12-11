@@ -19,9 +19,9 @@ import { listWishlist, addProductToWishlist, removeProductFromWishlist } from '.
 class App extends Component {
   state = {
     decodedToken: getDecodedToken(), // Restore the previous signed in data
-    products: { data: null },
+    products: null,
     editedProductID: null,
-    wishlist: { data: null }
+    wishlist: null
   }
 
   onSignIn = ({ email, password }) => {
@@ -85,14 +85,14 @@ class App extends Component {
   onAddProductToWishlist = (productID) => {
     addProductToWishlist(productID)
       .then((wishlist) => {
-        this.setState({ wishlist: { data: wishlist } })
+        this.setState({ wishlist })
       })
   }
 
   onRemoveProductFromWishlist = (productID) => {
     removeProductFromWishlist(productID)
       .then((wishlist) => {
-        this.setState({ wishlist: { data: wishlist } })
+        this.setState({ wishlist })
       })
   }
 
@@ -210,7 +210,7 @@ class App extends Component {
     }
 
     // If already loaded
-    if (this.state[section].data) {
+    if (this.state[section]) {
       return
     }
     
@@ -219,24 +219,19 @@ class App extends Component {
     load()
       .then((data) => {
         this.setState({
-          [section]: {
-            error: null,
-            data,
-          }
+          [section]: data
         })
       })
       .catch((error) => {
         this.setState({
-          [section]: {
-            error,
-          }
+          error
         })
       })
   }
 
   dataForSection(section) {
     this.loadSection(section)
-    return this.state[section].data
+    return this.state[section]
   }
 
   // When state changes
