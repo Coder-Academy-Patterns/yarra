@@ -11,11 +11,11 @@ export const initial = () => ({
   wishlist: null
 })
 
-export function *load(current, previous) {
+export function load(current, previous) {
   return [
     // { decodedToken: getDecodedToken() },
     listProducts().then(products => ({ products })),
-    // listProducts().then(products => ({ products }))
+    listWishlist().then(wishlist => ({ wishlist }))
   ]
 }
 
