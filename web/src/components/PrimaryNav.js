@@ -1,35 +1,32 @@
-import React, { Fragment } from "react";
-
-function Link({ to, children }) {
-  return <a href={ to } children={ children } />
-}
+import React, { Fragment } from 'react'
+import Link from '../routing/Link'
 
 function PrimaryNav({ signedIn }) {
   return (
     <nav className="primary">
       <ul>
         <li>
-          <Link to="/">Home</Link>
+          <Link href="/">Home</Link>
         </li>
         <li>
-          <Link to="/products">Products</Link>
+          <Link href="/products">Products</Link>
         </li>
         {signedIn ? (
           <Fragment>
             <li>
-              <Link to="/wishlist">Wishlist</Link>
+              <Link href="/wishlist">Wishlist</Link>
             </li>
             <li>
-              <Link to="/account">Account</Link>
+              <Link href="/account">Account</Link>
             </li>
           </Fragment>
         ) : (
           <Fragment>
             <li>
-              <Link to="/signin">Sign In</Link>
+              <Link href="/signin">Sign In</Link>
             </li>
             <li>
-              <Link to="/signup">Sign Up</Link>
+              <Link href="/signup">Sign Up</Link>
             </li>
           </Fragment>
         )}
