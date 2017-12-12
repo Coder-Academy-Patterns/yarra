@@ -17,6 +17,15 @@ server.use([
   require('./routes/wishlist'),
 ])
 
+// Error handler
+server.use((error, req, res, next) => {
+  res.json({
+    error: {
+      message: error.message
+    }
+  })
+})
+
 // Start the server
 server.listen(7000, (error) => {
   if (error) {
