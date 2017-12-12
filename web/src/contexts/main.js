@@ -50,51 +50,38 @@ export const onCreateProduct = (props, productData) => {
     }))
 }
 
-// onBeginEditingProduct = (newID) => {
-//   this.setState({ editedProductID: newID })
-// }
+export const onBeginEditingProduct = (props, newID) => ({ editedProductID }) => (
+  ({ editedProductID: editedProductID !== newID ? newID : null })
+)
 
-// onUpdateEditedProduct = (productData) => {
-//   const { editedProductID } = this.state
-//   updateProduct(editedProductID, productData)
-//     .then((updatedProduct) => {
-//       this.setState((prevState) => {
-//         // Replace in existing products array
-//         const updatedProducts = prevState.products.map((product) => {
-//           if (product._id === updatedProduct._id) {
-//             return updatedProduct
-//           }
-//           else {
-//             return product
-//           }
-//         })
-//         return {
-//           products: updatedProducts,
-//           editedProductID: null,
-//         }
-//       })
-//     })
-//     .catch((error) => {
-//       this.setState({ error })
-//     })
-// }
+export function *onUpdateEditedProduct (props, productData) {
+  let editedProductID
 
-// onAddProductToWishlist = (productID) => {
-//   addProductToWishlist(productID)
-//     .then((wishlist) => {
-//       this.setState({ wishlist })
-//     })
-//     .catch((error) => {
-//       this.setState({ error })
-//     })
-// }
+  yield (currentState) => {
+    editedProductID = currentState.editedProductID
+  }
 
-// onRemoveProductFromWishlist = (productID) => {
-//   removeProductFromWishlist(productID)
-//     .then((wishlist) => {
-//       this.setState({ wishlist })
-//     })
-//     .catch((error) => {
-//       this.setState({ error })
-//     })
-// }
+  yield updateProduct(editedProductID, productData)
+    .then((updatedProduct) => ({ products }) => ({
+      products: products.map((product) => {
+        if (product._id === updatedProduct._id) {
+          return updatedProduct
+        }
+        else {
+          return product
+        }
+      }),
+      editedProductID: null,
+    })
+  )
+}
+
+export const onAddProductToWishlist = (props, productID) => (
+  addProductToWishlist(productID)
+    .then((wishlist) => ({ wishlist }))
+)
+
+export const onRemoveProductFromWishlist = (props, productID) => (
+  removeProductFromWishlist(productID)
+    .then((wishlist) => ({ wishlist }))
+)
