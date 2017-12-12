@@ -134,6 +134,13 @@ class App extends Component {
             <Error error={ error } />
           }
 
+          <Route path='/' exact render={ () => (
+            <Fragment>
+              <h1>Yarra</h1>
+              <h2 className='mb-3'>Now Delivering: Shipping trillions of new products</h2>
+            </Fragment>
+          ) } />
+
           <Route path='/signin' exact render={ ({ match }) => (
             signedIn ? (
               <Redirect to='/products' />
