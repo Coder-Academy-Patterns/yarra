@@ -238,14 +238,16 @@ class App extends Component {
       this.setState({ error })
     }
 
+    // Available to anyone
+    listProducts()
+      .then((products) => {
+        this.setState({ products })
+      })
+      .catch(saveError)
+
     const { decodedToken } = this.state
     if (decodedToken) {
-      listProducts()
-        .then((products) => {
-          this.setState({ products })
-        })
-        .catch(saveError)
-      
+      // Available to only the signed in
       listWishlist()
         .then((wishlist) => {
           this.setState({ wishlist })
@@ -254,7 +256,6 @@ class App extends Component {
     }
     else {
       this.setState({
-        products: null,
         wishlist: null
       })
     }
