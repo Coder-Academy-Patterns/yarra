@@ -58,6 +58,9 @@ class App extends Component {
           }
         })
       })
+      .catch((error) => {
+        this.setState({ error })
+      })
   }
 
   onBeginEditingProduct = (newID) => {
@@ -84,6 +87,9 @@ class App extends Component {
           }
         })
       })
+      .catch((error) => {
+        this.setState({ error })
+      })
   }
 
   onAddProductToWishlist = (productID) => {
@@ -91,12 +97,18 @@ class App extends Component {
       .then((wishlist) => {
         this.setState({ wishlist })
       })
+      .catch((error) => {
+        this.setState({ error })
+      })
   }
 
   onRemoveProductFromWishlist = (productID) => {
     removeProductFromWishlist(productID)
       .then((wishlist) => {
         this.setState({ wishlist })
+      })
+      .catch((error) => {
+        this.setState({ error })
       })
   }
 
