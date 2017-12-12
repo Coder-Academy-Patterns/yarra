@@ -28,12 +28,12 @@ export function load(current, previous, { decodedToken }) {
   ]
 }
 
-export const onSignIn = ({ email, password }) => (
+export const onSignIn = (props, { email, password }) => (
   signIn({ email, password })
     .then((decodedToken) => ({ decodedToken }))
 )
 
-export const onSignUp = ({ email, password, firstName, lastName }) => (
+export const onSignUp = (props, { email, password, firstName, lastName }) => (
   signUp({ email, password, firstName, lastName })
     .then((decodedToken) => ({ decodedToken }))
 )

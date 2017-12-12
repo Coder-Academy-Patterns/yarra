@@ -67,26 +67,26 @@ function Main({
         </Fragment>
       }
 
-      <Route path='/signin' exact render={ ({ match }) => (
+      { route.auth && route.auth.signIn &&
         <Fragment>
           <h2>Sign In</h2>
           <SignInForm
             onSignIn={ onSignIn }
           />
         </Fragment>
-      ) } />
+      }
 
-      <Route path='/signup' exact render={ () => (
+      { route.auth && route.auth.signUp &&
         <Fragment>
           <h2>Sign Up</h2>
           <SignUpForm
             onSignUp={ onSignUp }
           />
         </Fragment>
-      ) } />
+      }
 
-      { route.account &&
-        <Fragment>
+      { route.account && (
+        signedIn ? <Fragment>
           <div className='mb-3'>
             <p>Email: { decodedToken.email }</p>
             <p>Signed in at: { new Date(decodedToken.iat * 1000).toISOString() }</p>
@@ -95,8 +95,12 @@ function Main({
               Sign Out
             </button>
           </div>
+        </Fragment> : <Fragment>
+          <div className='mb-3'>
+            <h2>You must signed in</h2>
+          </div>
         </Fragment>
-      }
+      ) }
       
       { route.products &&
         <Fragment>
