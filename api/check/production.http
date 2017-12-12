@@ -1,0 +1,26 @@
+@host = https://yarra-api-mdkahbzqvp.now.sh
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhdHJpY2suc21pdGhAY29kZXJhY2FkZW15LmVkdS5hdSIsImlhdCI6MTUxMzA1NjY2NCwiZXhwIjoxNTEzNjYxNDY0LCJzdWIiOiI1YTJmNjk5NzIwMTNiZTAwNzk0YmNlYjgifQ.kOwIteKe6WIvdrcVcq5N2EEsPXE4-GAVgOzL6IKvNuU
+
+###
+GET {{host}}/products
+
+###
+POST {{host}}/products
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "brandName": "Ford",
+  "name": "Focus"
+}
+
+###
+POST {{host}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "patrick.smith@coderacademy.edu.au",
+  "password": "password123",
+  "firstName": "Patrick",
+  "lastName": "Smith"
+}
