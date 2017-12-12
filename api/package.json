@@ -23,6 +23,7 @@
     "dev": "nodemon server.js",
     "seed": "node models/seeds.js",
     "drop": "node models/drop.js",
-    "reset": "npm run drop && npm run seed"
+    "reset": "npm run drop && npm run seed",
+    "deploy": "now -E production.env"
   }
 }
