@@ -1,5 +1,8 @@
 import React, { Fragment } from "react";
-import { Link } from "react-router-dom";
+
+function Link({ to, children }) {
+  return <a href={ to } children={ children } />
+}
 
 function PrimaryNav({ signedIn }) {
   return (
