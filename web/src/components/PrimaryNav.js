@@ -26,7 +26,7 @@ function PrimaryNav({ signedIn }) {
               <Link to="/signin">Sign In</Link>
             </li>
             <li>
-              <Link to="/signup">Sign up</Link>
+              <Link to="/signup">Sign Up</Link>
             </li>
           </Fragment>
         )}
