@@ -29,13 +29,15 @@ const requireAuth = (a) => a
 function Main({
   route,
   error, decodedToken, products, editedProductID, wishlist,
+  loadError, handlerError,
   handlers: {
     onSignIn,
     onSignUp,
     onSignOut,
-    onBeginEditingProduct,
     onAddProductToWishlist,
     onRemoveProductFromWishlist,
+    onCreateProduct,
+    onBeginEditingProduct,
     onUpdateEditedProduct
   }
 }) {
@@ -48,6 +50,14 @@ function Main({
 
       { error &&
         <Error error={ error } />
+      }
+
+      { loadError &&
+        <Error error={ loadError } />
+      }
+
+      { handlerError &&
+        <Error error={ handlerError } />
       }
 
       { route.home &&
@@ -111,19 +121,19 @@ function Main({
         </Fragment>
       }
 
-      <Route path='/admin/products' exact render={ requireAuth(() => (
+      { route.admin && route.admin.products &&
         <Fragment>
           { signedIn &&
             <div className='mb-3'>
               <h2>Create Product</h2>
               <ProductForm
                 submitTitle='Create Product'
-                onSubmit={ this.onCreateProduct }
+                onSubmit={ onCreateProduct }
               />
             </div>
           }
         </Fragment>
-      )) } />
+      }
         
       { route.wishlist &&
         <Fragment>

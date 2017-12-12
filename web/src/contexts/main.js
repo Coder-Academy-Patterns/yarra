@@ -11,11 +11,20 @@ export const initial = () => ({
   wishlist: null
 })
 
-export function load(current, previous) {
+export function load(current, previous, { decodedToken }) {
+  const signedIn = !!decodedToken
+
+  // const changed = (f) => !previous || f(current) !== f(previous)
+  const nowPresent = (f) => !!f(current) && (!previous || !f(previous))
+
+  const onProducts = nowPresent(p => p.route.products)
+  const onWishlist = nowPresent(p => p.route.wishlist)
+
   return [
-    // { decodedToken: getDecodedToken() },
-    listProducts().then(products => ({ products })),
-    listWishlist().then(wishlist => ({ wishlist }))
+    (onProducts) &&
+      listProducts().then(products => ({ products })),
+    (signedIn && (onProducts || onWishlist)) &&
+      listWishlist().then(wishlist => ({ wishlist }))
   ]
 }
 
@@ -34,21 +43,12 @@ export const onSignOut = () => {
   return { decodedToken: null }
 }
 
-// onCreateProduct = (productData) => {
-//   createProduct(productData)
-//     .then((newProduct) => {
-//       this.setState((prevState) => {
-//         // Append to existing products array
-//         const updatedProducts = prevState.products.concat(newProduct)
-//         return {
-//           products: updatedProducts
-//         }
-//       })
-//     })
-//     .catch((error) => {
-//       this.setState({ error })
-//     })
-// }
+export const onCreateProduct = (props, productData) => {
+  createProduct(productData)
+    .then((newProduct) => ({ products }) => ({
+        products: products.concat(newProduct)
+    }))
+}
 
 // onBeginEditingProduct = (newID) => {
 //   this.setState({ editedProductID: newID })

@@ -11,6 +11,9 @@ function pathToState(path) {
   else if (path === '/account') {
     return { account: true }
   }
+  else if (path === '/admin/products') {
+    return { admin: { products: true } }
+  }
   else {
     return { notFound: { path } }
   }
