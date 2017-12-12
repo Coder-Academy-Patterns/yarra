@@ -6,6 +6,7 @@ import SignUpForm from './components/SignUpForm'
 import ProductList from './components/ProductList'
 import ProductForm from './components/ProductForm'
 import Wishlist from './components/Wishlist'
+import PrimaryNav from './components/PrimaryNav'
 import { signIn, signUp, signOutNow } from './api/auth'
 import { getDecodedToken } from './api/token'
 import { listProducts, createProduct, updateProduct } from './api/products'
@@ -98,6 +99,8 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
+
+          <PrimaryNav />
 
           <Route path='/' exact render={ () => (
             <Fragment>
