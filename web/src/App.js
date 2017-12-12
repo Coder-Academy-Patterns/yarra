@@ -7,6 +7,7 @@ import ProductList from './components/ProductList'
 import ProductForm from './components/ProductForm'
 import Wishlist from './components/Wishlist'
 import PrimaryNav from './components/PrimaryNav'
+import Error from './components/Error'
 import { signIn, signUp, signOutNow } from './api/auth'
 import { getDecodedToken } from './api/token'
 import { listProducts, createProduct, updateProduct } from './api/products'
@@ -14,6 +15,7 @@ import { listWishlist, addProductToWishlist, removeProductFromWishlist } from '.
 
 class App extends Component {
   state = {
+    error: null,
     decodedToken: getDecodedToken(), // Restore the previous signed in data
     products: null,
     editedProductID: null,
@@ -25,12 +27,18 @@ class App extends Component {
       .then((decodedToken) => {
         this.setState({ decodedToken })
       })
+      .catch((error) => {
+        this.setState({ error })
+      })
   }
 
   onSignUp = ({ email, password, firstName, lastName }) => {
     signUp({ email, password, firstName, lastName })
       .then((decodedToken) => {
         this.setState({ decodedToken })
+      })
+      .catch((error) => {
+        this.setState({ error })
       })
   }
 
@@ -93,7 +101,7 @@ class App extends Component {
   }
 
   render() {
-    const { decodedToken, products, editedProductID, wishlist } = this.state
+    const { error, decodedToken, products, editedProductID, wishlist } = this.state
     const signedIn = !!decodedToken
 
     const requireAuth = (render) => (props) => (
@@ -109,6 +117,10 @@ class App extends Component {
         <div className="App">
 
           <PrimaryNav signedIn={ signedIn } />
+
+          { error &&
+            <Error error={ error } />
+          }
 
           <Route path='/signin' exact render={ ({ match }) => (
             <Fragment>
@@ -195,23 +207,23 @@ class App extends Component {
   }
 
   load() {
+    const saveError = (error) => {
+      this.setState({ error })
+    }
+
     const { decodedToken } = this.state
     if (decodedToken) {
       listProducts()
         .then((products) => {
           this.setState({ products })
         })
-        .catch((error) => {
-          console.error('error loading products', error)
-        })
+        .catch(saveError)
       
       listWishlist()
         .then((wishlist) => {
           this.setState({ wishlist })
         })
-        .catch((error) => {
-          console.error('error loading wishlist', error)
-        })
+        .catch(saveError)
     }
     else {
       this.setState({
