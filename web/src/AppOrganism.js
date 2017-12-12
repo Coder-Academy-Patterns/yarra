@@ -30,6 +30,9 @@ function Main({
   route,
   error, decodedToken, products, editedProductID, wishlist,
   handlers: {
+    onSignIn,
+    onSignUp,
+    onSignOut,
     onBeginEditingProduct,
     onAddProductToWishlist,
     onRemoveProductFromWishlist,
@@ -58,7 +61,7 @@ function Main({
         <Fragment>
           <h2>Sign In</h2>
           <SignInForm
-            onSignIn={ this.onSignIn }
+            onSignIn={ onSignIn }
           />
         </Fragment>
       ) } />
@@ -67,23 +70,23 @@ function Main({
         <Fragment>
           <h2>Sign Up</h2>
           <SignUpForm
-            onSignUp={ this.onSignUp }
+            onSignUp={ onSignUp }
           />
         </Fragment>
       ) } />
 
-      <Route path='/account' exact render={ requireAuth(() => (
+      { route.account &&
         <Fragment>
           <div className='mb-3'>
             <p>Email: { decodedToken.email }</p>
             <p>Signed in at: { new Date(decodedToken.iat * 1000).toISOString() }</p>
             <p>Expire at: { new Date(decodedToken.exp * 1000).toISOString() }</p>
-            <button onClick={ this.onSignOut }>
+            <button onClick={ onSignOut }>
               Sign Out
             </button>
           </div>
         </Fragment>
-      )) } />
+      }
       
       { route.products &&
         <Fragment>
@@ -127,7 +130,7 @@ function Main({
           { wishlist &&
             <Wishlist
               products={ wishlist.products }
-              onRemoveProductFromWishlist={ this.onRemoveProductFromWishlist }
+              onRemoveProductFromWishlist={ onRemoveProductFromWishlist }
             />
           }
         </Fragment>

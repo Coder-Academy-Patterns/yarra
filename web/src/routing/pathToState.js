@@ -8,6 +8,9 @@ function pathToState(path) {
   else if (path === '/wishlist') {
     return { wishlist: true }
   }
+  else if (path === '/account') {
+    return { account: true }
+  }
   else {
     return { notFound: { path } }
   }
