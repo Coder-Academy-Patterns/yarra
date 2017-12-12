@@ -103,6 +103,7 @@ function Main({
           { products &&
             <ProductList
               products={ products }
+              productsInWishlist={ wishlist ? wishlist.products : null }
               editedProductID={ editedProductID }
               onEditProduct={ onBeginEditingProduct }
               onAddProductToWishlist={ onAddProductToWishlist }
