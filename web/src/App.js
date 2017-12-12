@@ -135,21 +135,29 @@ class App extends Component {
           }
 
           <Route path='/signin' exact render={ ({ match }) => (
-            <Fragment>
-              <h2>Sign In</h2>
-              <SignInForm
-                onSignIn={ this.onSignIn }
-              />
-            </Fragment>
+            signedIn ? (
+              <Redirect to='/products' />
+            ) : (
+              <Fragment>
+                <h2>Sign In</h2>
+                <SignInForm
+                  onSignIn={ this.onSignIn }
+                />
+              </Fragment>
+            )
           ) } />
 
           <Route path='/signup' exact render={ () => (
-            <Fragment>
-              <h2>Sign Up</h2>
-              <SignUpForm
-                onSignUp={ this.onSignUp }
-              />
-            </Fragment>
+            signedIn ? (
+              <Redirect to='/products' />
+            ) : (
+              <Fragment>
+                <h2>Sign Up</h2>
+                <SignUpForm
+                  onSignUp={ this.onSignUp }
+                />
+              </Fragment>
+            )
           ) } />
 
           <Route path='/account' exact render={ requireAuth(() => (
