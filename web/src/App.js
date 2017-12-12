@@ -182,9 +182,10 @@ class App extends Component {
           
           <Route path='/products' exact render={ () => (
             <Fragment>
-              { products &&
+              { products && wishlist &&
                 <ProductList
                   products={ products }
+                  productsInWishlist={ wishlist.products }
                   editedProductID={ editedProductID }
                   onEditProduct={ this.onBeginEditingProduct }
                   onAddProductToWishlist={ this.onAddProductToWishlist }
