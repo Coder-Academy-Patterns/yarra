@@ -7,8 +7,10 @@ import ProductForm from './components/ProductForm'
 import Wishlist from './components/Wishlist'
 import PrimaryNav from './components/PrimaryNav'
 import Error from './components/Error'
-import makeOrganism from 'react-organism'
+import makeAware from 'react-organism'
 import * as mainContext from './contexts/main'
+import Router from './routing/Router'
+import pathToState from './routing/pathToState'
 
 function Route({
   path,
@@ -24,8 +26,15 @@ function Route({
 
 const requireAuth = (a) => a
 
-function App({
-  error, decodedToken, products, editedProductID, wishlist
+function Main({
+  route,
+  error, decodedToken, products, editedProductID, wishlist,
+  handlers: {
+    onBeginEditingProduct,
+    onAddProductToWishlist,
+    onRemoveProductFromWishlist,
+    onUpdateEditedProduct
+  }
 }) {
   const signedIn = !!decodedToken
 
@@ -38,12 +47,12 @@ function App({
         <Error error={ error } />
       }
 
-      <Route path='/' exact render={ () => (
+      { route.home &&
         <Fragment>
           <h1>Yarra</h1>
           <h2 className='mb-3'>Now Delivering: Shipping trillions of new products</h2>
         </Fragment>
-      ) } />
+      }
 
       <Route path='/signin' exact render={ ({ match }) => (
         <Fragment>
@@ -76,28 +85,28 @@ function App({
         </Fragment>
       )) } />
       
-      <Route path='/products' exact render={ () => (
+      { route.products &&
         <Fragment>
           { products &&
             <ProductList
               products={ products }
               editedProductID={ editedProductID }
-              onEditProduct={ this.onBeginEditingProduct }
-              onAddProductToWishlist={ this.onAddProductToWishlist }
-              onRemoveProductFromWishlist={ this.onRemoveProductFromWishlist }
+              onEditProduct={ onBeginEditingProduct }
+              onAddProductToWishlist={ onAddProductToWishlist }
+              onRemoveProductFromWishlist={ onRemoveProductFromWishlist }
               renderEditForm={ (product) => (
                 <div className='ml-3'>
                   <ProductForm
                     initialProduct={ product }
                     submitTitle='Update Product'
-                    onSubmit={ this.onUpdateEditedProduct }
+                    onSubmit={ onUpdateEditedProduct }
                   />
                 </div>
               ) }
             />
           }
         </Fragment>
-      ) } />
+      }
 
       <Route path='/admin/products' exact render={ requireAuth(() => (
         <Fragment>
@@ -113,7 +122,7 @@ function App({
         </Fragment>
       )) } />
         
-      <Route path='/wishlist' exact render={ requireAuth(() => (
+      { route.wishlist &&
         <Fragment>
           { wishlist &&
             <Wishlist
@@ -122,14 +131,25 @@ function App({
             />
           }
         </Fragment>
-      )) } />
+      }
 
-      <Route render={ ({ location }) => (
-        <h1>Page not found: { location.pathname }</h1>
-      ) } />
+      { route.notFound &&
+        <h1>Page not found: { route.notFound.path }</h1>
+      }
 
     </div>
   );
 }
 
-export default makeOrganism(App, mainContext);
+const MainAware = makeAware(Main, mainContext)
+
+export default function App() {
+  return (
+    <Router
+      pathToState={ pathToState }
+      render={ (route) =>
+        <MainAware route={ route } />
+      }
+    />
+  )
+}
