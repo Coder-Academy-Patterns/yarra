@@ -160,15 +160,20 @@ class App extends Component {
             </Fragment>
           ) } />
 
-          { signedIn &&
-            <div className='mb-3'>
-              <h2>Create Product</h2>
-              <ProductForm
-                submitTitle='Create Product'
-                onSubmit={ this.onCreateProduct }
-              />
-            </div>
-          }
+          <Route path='/admin/products' exact render={ () => (
+            <Fragment>
+              { signedIn &&
+                <div className='mb-3'>
+                  <h2>Create Product</h2>
+                  <ProductForm
+                    submitTitle='Create Product'
+                    onSubmit={ this.onCreateProduct }
+                  />
+                </div>
+              }
+            </Fragment>
+          ) } />
+            
           <Route path='/wishlist' exact render={ () => (
             <Fragment>
               { signedIn && wishlist &&
@@ -179,6 +184,7 @@ class App extends Component {
               }
             </Fragment>
           ) } />
+
         </div>
       </Router>
     );
