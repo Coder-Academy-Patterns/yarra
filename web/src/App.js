@@ -137,24 +137,29 @@ class App extends Component {
             </Fragment>
           ) } />
           
-          { products &&
-            <ProductList
-              products={ products }
-              editedProductID={ editedProductID }
-              onEditProduct={ this.onBeginEditingProduct }
-              onAddProductToWishlist={ this.onAddProductToWishlist }
-              onRemoveProductFromWishlist={ this.onRemoveProductFromWishlist }
-              renderEditForm={ (product) => (
-                <div className='ml-3'>
-                  <ProductForm
-                    initialProduct={ product }
-                    submitTitle='Update Product'
-                    onSubmit={ this.onUpdateEditedProduct }
-                  />
-                </div>
-              ) }
-            />
-          }
+          <Route path='/products' exact render={ () => (
+            <Fragment>
+              { products &&
+                <ProductList
+                  products={ products }
+                  editedProductID={ editedProductID }
+                  onEditProduct={ this.onBeginEditingProduct }
+                  onAddProductToWishlist={ this.onAddProductToWishlist }
+                  onRemoveProductFromWishlist={ this.onRemoveProductFromWishlist }
+                  renderEditForm={ (product) => (
+                    <div className='ml-3'>
+                      <ProductForm
+                        initialProduct={ product }
+                        submitTitle='Update Product'
+                        onSubmit={ this.onUpdateEditedProduct }
+                      />
+                    </div>
+                  ) }
+                />
+              }
+            </Fragment>
+          ) } />
+
           { signedIn &&
             <div className='mb-3'>
               <h2>Create Product</h2>
