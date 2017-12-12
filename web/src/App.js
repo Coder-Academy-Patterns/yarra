@@ -100,7 +100,7 @@ class App extends Component {
       <Router>
         <div className="App">
 
-          <PrimaryNav />
+          <PrimaryNav signedIn={ signedIn } />
 
           <Route path='/' exact render={ () => (
             <Fragment>
