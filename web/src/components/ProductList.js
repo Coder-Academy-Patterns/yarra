@@ -1,6 +1,25 @@
 import React, { Fragment } from 'react'
 import Product from './Product'
 
+// All this function does it determine whether the 'add to wishlist' and 'remove from wishlist' buttons should be shown
+function statusForWishlist(product, productsInWishlist) {
+  const hasWishlist = !!productsInWishlist
+
+  // Does not have wishlist
+  if (!hasWishlist) {
+    return { showAdd: false, showRemove: false }
+  }
+  
+  // Has wishlist
+  const inWishlist = productsInWishlist.some((productInWishlist) => {
+    // Found a matching product
+    // i.e. this `product` is in the wishlist
+    return (productInWishlist._id === product._id)
+  })
+
+  return { showAdd: !inWishlist, showRemove: inWishlist }
+}
+
 function ProductList({
   products,
   productsInWishlist,
@@ -10,21 +29,14 @@ function ProductList({
   onRemoveProductFromWishlist,
   renderEditForm
 }) {
+  const hasWishlist = !!productsInWishlist
+
   return (
     <div className='mb-3'>
       <h2>Products</h2>
       {
         products.map((product) => {
-          // .some -> array[0] || array[1] || array[2]
-          // .every -> array[0] && array[1] && array[2]
-          const inWishlist = productsInWishlist.some((productInWishlist) => {
-            // Found a matching product
-            // i.e. this `product` is in the wishlist
-            return (productInWishlist._id === product._id)
-          })
-
-          const showAddToWishlist = !inWishlist
-          const showRemoveFromWishlist = inWishlist
+          const { showAdd, showRemove } = statusForWishlist(product, productsInWishlist)
 
           return (
             <Fragment key={ product._id }>
@@ -33,10 +45,10 @@ function ProductList({
                 onEdit={ () => {
                   onEditProduct(product._id)
                 } }
-                onAddToWishlist={ showAddToWishlist ? () => {
+                onAddToWishlist={ showAdd ? () => {
                   onAddProductToWishlist(product._id)
                 } : null }
-                onRemoveFromWishlist={ showRemoveFromWishlist ? () => {
+                onRemoveFromWishlist={ showRemove ? () => {
                   onRemoveProductFromWishlist(product._id)
                 } : null }
               />

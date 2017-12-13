@@ -5,7 +5,7 @@ const authMiddleware = require('../middleware/auth')
 const router = new express.Router()
 
 // Read list
-router.get('/products', authMiddleware.requireJWT, (req, res) => {
+router.get('/products', (req, res) => {
   Product.find()
     .then((products) => {
       res.json(products)

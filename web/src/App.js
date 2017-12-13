@@ -183,10 +183,10 @@ class App extends Component {
             
             <Route path='/products' exact render={ () => (
               <Fragment>
-                { products && wishlist &&
+                { products &&
                   <ProductList
                     products={ products }
-                    productsInWishlist={ wishlist.products }
+                    productsInWishlist={ !!wishlist ? wishlist.products : null }
                     editedProductID={ editedProductID }
                     onEditProduct={ this.onBeginEditingProduct }
                     onAddProductToWishlist={ this.onAddProductToWishlist }
@@ -245,14 +245,18 @@ class App extends Component {
       this.setState({ error })
     }
 
+    // Load for everyone
+    listProducts()
+      .then((products) => {
+        this.setState({ products })
+      })
+      .catch(saveError)
+
     const { decodedToken } = this.state
-    if (decodedToken) {
-      listProducts()
-        .then((products) => {
-          this.setState({ products })
-        })
-        .catch(saveError)
-      
+    const signedIn = !!decodedToken
+
+    if (signedIn) {
+      // Load only for signed in users
       listWishlist()
         .then((wishlist) => {
           this.setState({ wishlist })
@@ -260,8 +264,8 @@ class App extends Component {
         .catch(saveError)
     }
     else {
+      // Clear sign-in-only data
       this.setState({
-        products: null,
         wishlist: null
       })
     }
