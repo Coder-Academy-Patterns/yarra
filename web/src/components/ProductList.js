@@ -15,7 +15,14 @@ function ProductList({
       <h2>Products</h2>
       {
         products.map((product) => {
-          const inWishlist = true // Work out you would determine if a product is in `productsInWishlist`
+          // .some -> array[0] || array[1] || array[2]
+          // .every -> array[0] && array[1] && array[2]
+          const inWishlist = productsInWishlist.some((productInWishlist) => {
+            // Found a matching product
+            // i.e. this `product` is in the wishlist
+            return (productInWishlist._id === product._id)
+          })
+
           const showAddToWishlist = !inWishlist
           const showRemoveFromWishlist = inWishlist
 
