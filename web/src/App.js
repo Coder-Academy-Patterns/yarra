@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 import SignInForm from './components/SignInForm'
 import SignUpForm from './components/SignUpForm'
 import ProductList from './components/ProductList'
@@ -134,100 +134,106 @@ class App extends Component {
             <Error error={ error } />
           }
 
-          <Route path='/' exact render={ () => (
-            <Fragment>
-              <h1>Yarra</h1>
-              <h2 className='mb-3'>Now Delivering: Shipping trillions of new products</h2>
-            </Fragment>
-          ) } />
-
-          <Route path='/signin' exact render={ ({ match }) => (
-            signedIn ? (
-              <Redirect to='/products' />
-            ) : (
+          <Switch>
+            <Route path='/' exact render={ () => (
               <Fragment>
-                <h2>Sign In</h2>
-                <SignInForm
-                  onSignIn={ this.onSignIn }
-                />
+                <h1>Yarra</h1>
+                <h2 className='mb-3'>Now Delivering: Shipping trillions of new products</h2>
               </Fragment>
-            )
-          ) } />
+            ) } />
 
-          <Route path='/signup' exact render={ () => (
-            signedIn ? (
-              <Redirect to='/products' />
-            ) : (
-              <Fragment>
-                <h2>Sign Up</h2>
-                <SignUpForm
-                  onSignUp={ this.onSignUp }
-                />
-              </Fragment>
-            )
-          ) } />
-
-          <Route path='/account' exact render={ requireAuth(() => (
-            <Fragment>
-              <div className='mb-3'>
-                <p>Email: { decodedToken.email }</p>
-                <p>Signed in at: { new Date(decodedToken.iat * 1000).toISOString() }</p>
-                <p>Expire at: { new Date(decodedToken.exp * 1000).toISOString() }</p>
-                <button onClick={ this.onSignOut }>
-                  Sign Out
-                </button>
-              </div>
-            </Fragment>
-          )) } />
-          
-          <Route path='/products' exact render={ () => (
-            <Fragment>
-              { products && wishlist &&
-                <ProductList
-                  products={ products }
-                  productsInWishlist={ wishlist.products }
-                  editedProductID={ editedProductID }
-                  onEditProduct={ this.onBeginEditingProduct }
-                  onAddProductToWishlist={ this.onAddProductToWishlist }
-                  onRemoveProductFromWishlist={ this.onRemoveProductFromWishlist }
-                  renderEditForm={ (product) => (
-                    <div className='ml-3'>
-                      <ProductForm
-                        initialProduct={ product }
-                        submitTitle='Update Product'
-                        onSubmit={ this.onUpdateEditedProduct }
-                      />
-                    </div>
-                  ) }
-                />
-              }
-            </Fragment>
-          ) } />
-
-          <Route path='/admin/products' exact render={ requireAuth(() => (
-            <Fragment>
-              { signedIn &&
-                <div className='mb-3'>
-                  <h2>Create Product</h2>
-                  <ProductForm
-                    submitTitle='Create Product'
-                    onSubmit={ this.onCreateProduct }
+            <Route path='/signin' exact render={ ({ match }) => (
+              signedIn ? (
+                <Redirect to='/products' />
+              ) : (
+                <Fragment>
+                  <h2>Sign In</h2>
+                  <SignInForm
+                    onSignIn={ this.onSignIn }
                   />
+                </Fragment>
+              )
+            ) } />
+
+            <Route path='/signup' exact render={ () => (
+              signedIn ? (
+                <Redirect to='/products' />
+              ) : (
+                <Fragment>
+                  <h2>Sign Up</h2>
+                  <SignUpForm
+                    onSignUp={ this.onSignUp }
+                  />
+                </Fragment>
+              )
+            ) } />
+
+            <Route path='/account' exact render={ requireAuth(() => (
+              <Fragment>
+                <div className='mb-3'>
+                  <p>Email: { decodedToken.email }</p>
+                  <p>Signed in at: { new Date(decodedToken.iat * 1000).toISOString() }</p>
+                  <p>Expire at: { new Date(decodedToken.exp * 1000).toISOString() }</p>
+                  <button onClick={ this.onSignOut }>
+                    Sign Out
+                  </button>
                 </div>
-              }
-            </Fragment>
-          )) } />
+              </Fragment>
+            )) } />
             
-          <Route path='/wishlist' exact render={ requireAuth(() => (
-            <Fragment>
-              { wishlist &&
-                <Wishlist
-                  products={ wishlist.products }
-                  onRemoveProductFromWishlist={ this.onRemoveProductFromWishlist }
-                />
-              }
-            </Fragment>
-          )) } />
+            <Route path='/products' exact render={ () => (
+              <Fragment>
+                { products && wishlist &&
+                  <ProductList
+                    products={ products }
+                    productsInWishlist={ wishlist.products }
+                    editedProductID={ editedProductID }
+                    onEditProduct={ this.onBeginEditingProduct }
+                    onAddProductToWishlist={ this.onAddProductToWishlist }
+                    onRemoveProductFromWishlist={ this.onRemoveProductFromWishlist }
+                    renderEditForm={ (product) => (
+                      <div className='ml-3'>
+                        <ProductForm
+                          initialProduct={ product }
+                          submitTitle='Update Product'
+                          onSubmit={ this.onUpdateEditedProduct }
+                        />
+                      </div>
+                    ) }
+                  />
+                }
+              </Fragment>
+            ) } />
+
+            <Route path='/admin/products' exact render={ requireAuth(() => (
+              <Fragment>
+                { signedIn &&
+                  <div className='mb-3'>
+                    <h2>Create Product</h2>
+                    <ProductForm
+                      submitTitle='Create Product'
+                      onSubmit={ this.onCreateProduct }
+                    />
+                  </div>
+                }
+              </Fragment>
+            )) } />
+              
+            <Route path='/wishlist' exact render={ requireAuth(() => (
+              <Fragment>
+                { wishlist &&
+                  <Wishlist
+                    products={ wishlist.products }
+                    onRemoveProductFromWishlist={ this.onRemoveProductFromWishlist }
+                  />
+                }
+              </Fragment>
+            )) } />
+
+            <Route render={ ({ location }) => (
+              <h2>Page not found: { location.pathname }</h2>
+            ) } />
+          </Switch>
 
         </div>
       </Router>
