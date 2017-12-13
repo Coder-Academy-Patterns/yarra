@@ -7,6 +7,9 @@ function improveMessage(message) {
   else if (/ 401/.test(message)) {
     return 'You must be signed in'
   }
+  else if (/Network Error/i.test(message)) {
+    return 'Cannot connect to API server'
+  }
 
   return message
 }
