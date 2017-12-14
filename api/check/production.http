@@ -1,0 +1,26 @@
+@base_url = https://yarra-api-fopwdjdusz.now.sh
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhdHJpY2suc21pdGhAY29kZXJhY2FkZW15LmVkdS5hdSIsImlhdCI6MTUxMzIxMTQwOCwiZXhwIjoxNTEzODE2MjA4LCJzdWIiOiI1YTMxYzYwZjFhZDVmZTAwNzNmMTIyNzkifQ.DUfa2RctYfhljCjvStFvtzgSxTCrH4uR_EPUBL1anaM
+
+### List products
+GET {{base_url}}/products
+
+### Create product
+POST {{base_url}}/products
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "brandName": "Two dollar shop",
+  "name": "Sunglasses"
+}
+
+### Sign up
+POST {{base_url}}/auth/register
+Content-Type: application/json
+
+{
+  "email": "patrick.smith@coderacademy.edu.au",
+  "firstName": "Patrick",
+  "lastName": "Smith",
+  "password": "password123"
+}
